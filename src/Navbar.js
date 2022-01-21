@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import Elevator from './Elevator.js';
 import Home from './Home.js';
-import Experience from './Experience.js';
+import Metadata from './Metadata.js';
 import Contact from './Contact.js';
 import Route from 'react-router-dom/Route';
 import Dropdown from './Dropdown';
@@ -55,7 +55,7 @@ function Navbar() {
           </li>
          
           <li className='nav-item' id="mainls">
-            <Link to='/experience' className='nav-links' onClick={closeMobileMenu}>Experience</Link>
+            <Link to='/metadata' className='nav-links' onClick={closeMobileMenu}>Metadata</Link>
           </li>
           
           <li className='nav-item' id="mainls">
@@ -68,7 +68,7 @@ function Navbar() {
       <Route path ="/home" exact strict component={Home}/>
       <Route path ="/elevator" exact strict component={Elevator}/>
       
-      <Route path ="/experience" exact strict component={Experience}/>
+      <Route path ="/metadata" exact strict component={Metadata}/>
 
       <Route path ="/contact" exact strict component={Contact}/>
     </>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
-import './Experience.css';
+import './Metadata.css';
 
 
-class Experience extends Component {
+class Metadata extends Component {
     render() {
         return (
            <div className="app">
@@ -26,4 +26,4 @@ class Experience extends Component {
     }
 }
 
-export default Experience;
+export default Metadata;
