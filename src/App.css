@@ -1,0 +1,10 @@
+body > #root > div {
+    height: 100vh;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+        -webkit-background-size: 100% 100%; /*  Safari  */
+        -khtml-background-size: 100% 100%; /*  Konqueror  */
+        -moz-background-size: 100% 100%; /*  Firefox  */
+    overflow:auto;
+    }

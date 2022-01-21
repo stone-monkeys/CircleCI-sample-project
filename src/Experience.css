@@ -1,0 +1,101 @@
+body {
+   align-items: center;
+   justify-content: center;
+}
+
+.gallery {
+   position: absolute;
+   left:25%;
+   top:25%;
+   display: grid;
+   grid-template-columns: 1fr 1fr ; 
+   grid-template-rows: 1fr 1fr; 
+   gap: 30% 50%; 
+   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.bubbles {
+   color: rgb(196, 164, 164);
+   background-color:rgb(26, 37, 73);
+   width: 30vmin;
+   height: 25vmin;
+   border-radius: 5%;
+   list-style-type: none;
+   padding:2%;
+}
+
+
+#textOne{
+   font-size:1.1vw ; 
+   text-align: center;
+}
+
+/********* SUPER EXTRA SMALL DEVICES ONLY ******/
+@media (min-width: 0px) and (max-width: 500px){
+   
+   .gallery{
+      position: absolute;
+      left:10%;
+      top:20%;
+      display: grid;
+      vertical-align:bottom;
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 20% 20%; 
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   }
+
+   #textOne{
+      font-size:2.3vw ; 
+      line-height: 150%;
+   }
+
+   .bubbles{
+      color: rgb(196, 164, 164);
+      background-color:rgb(26, 37, 73);
+      width: 32vmin;
+      height: 30vmin;
+      border-radius: 5%;
+      list-style-type: none;
+      padding:2%;
+   }
+}
+
+
+/********* SMALL DEVICES ONLY ******/
+@media (min-width: 501px) and (max-width: 1200px){
+   
+   .gallery {
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 10% 20%; 
+    }
+
+    #textOne{
+      position: relative;
+      font-size:1.9vw;
+      line-height: 150%;  
+   }
+
+   .bubbles{
+      color: rgb(196, 164, 164);
+      background-color:rgb(26, 37, 73);
+      width: 25vmin;
+      height: 25vmin;
+      border-radius: 5%;
+      list-style-type: none;
+      padding:5%;
+   }
+}
+
+/********* Medium DEVICES ONLY ******/
+@media (min-width: 1200px) and (max-width: 1500px){
+   .gallery{
+      left:31%;
+      gap: 30% 30%;   
+   }
+   
+   .bubbles{
+      width: 30vmin;
+      height: 25vmin;
+      padding:1.2%;
+   }
+}

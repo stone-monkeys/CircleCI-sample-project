@@ -1,0 +1,64 @@
+  .navbar {
+    background-color:rgb(43, 88, 41);
+    display: flex;
+    justify-content: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    align-items: center;
+    font-size: 2.5vw;
+  }
+
+  .imglogo {
+    height: 4vh;
+    background-image: url("./assets/cci2.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow:auto;
+    }
+  
+  .navbar-logo {
+    color: white;
+    justify-self: start;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 5vh;
+  }
+  
+  .nav-menu {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-gap: 2%;
+    width: 70%;
+    justify-content: end;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-links {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-links:hover {
+    background-color: black;
+    border-radius: 5%;
+    transition: .4s;
+  }
+
+/********* SUPER EXTRA SMALL DEVICES ONLY ******/
+@media (min-width: 0px) and (max-width: 500px){
+  .navbar-logo {
+    font-size: 2.5vh;
+  }
+
+  .imglogo {
+    height: 3vh;
+  }
+
+  .navbar {
+    font-size: 2.3vw;
+  }
+}

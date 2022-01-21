@@ -1,0 +1,60 @@
+body {
+  align-items: center;
+  justify-content: center;
+}
+
+#profile-photo{
+  margin: auto;
+  background-image: url("./assets/ci.png");
+  width: 50vmin;
+  height: 50vmin;
+  margin-top: 5%;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block;
+  overflow:auto;
+  border: 5px solid ;
+  border-color:grey;
+  opacity:.4;
+  transition: 3s;
+  }
+
+  #profile-photo:hover{
+    opacity:1;
+    overflow:auto;
+  }
+
+  #name, #occupation{
+    color: whitesmoke;
+    opacity: .9;
+    font-size:7vw ; 
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-bottom: 2px solid black;
+    text-transform: uppercase;
+    
+  }
+
+#occupation{
+  color:rgb(43, 88, 41);
+}
+
+  /********* SUPER EXTRA SMALL DEVICES ONLY ******/
+  @media (min-width: 0px) and (max-width: 700px){
+    #profile-photo{
+     margin-top: 35%;  
+    }
+
+    #name, #occupation{
+      font-size:9vw ;  
+      opacity: 1;
+    }
+
+    #occupation{
+      filter: brightness(150%);
+    }
+
+    
+  }
+
