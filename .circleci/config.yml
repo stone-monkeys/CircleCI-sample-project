@@ -48,4 +48,4 @@ jobs:
           name: Run tests 
           command: npm test
       - run:
-          echo "hello world"
+          echo "${CIRCLE_BRANCH}"
