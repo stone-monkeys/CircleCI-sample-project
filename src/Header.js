@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
-import About from './About';
+import Elevator from './Elevator';
 
 
 
@@ -16,7 +16,7 @@ class Header extends Component {
 
                 <ul className="menu__link">
                     <li><Link className="individual_item" to='/'>Home</Link></li>
-                    <li> <Link className="individual_item" to='/about'>About</Link></li>
+                    <li> <Link className="individual_item" to='/elevator'>Elevator</Link></li>
                 </ul>
 
             </nav>

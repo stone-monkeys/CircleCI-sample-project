@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
 import './Home.css';
-import About from './About.js';
+import Elevator from './Elevator';
 import Navbar from './Navbar.js';
 
 class Home extends Component {

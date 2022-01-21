@@ -27,6 +27,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:12.9.1-browsers
+    environment:
+      IMAGETAG: << pipeline.parameters.image-tag >>
     working_directory: ~/repo
     steps:
       - checkout
@@ -47,3 +49,5 @@ jobs:
       - run:
           name: Run tests 
           command: npm test
+      - run:
+          echo: "${IMAGETAG}"

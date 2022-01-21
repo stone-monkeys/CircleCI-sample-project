@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import About from './About.js';
+import Elevator from './Elevator.js';
 import Home from './Home.js';
 import Experience from './Experience.js';
 import Contact from './Contact.js';
@@ -50,7 +50,7 @@ function Navbar() {
           </li>
           
           <li className='nav-item' id="mainls">
-            <Link to='/about' className='nav-links'onClick={closeMobileMenu}>About</Link>
+            <Link to='/elevator' className='nav-links'onClick={closeMobileMenu}>Elevator</Link>
             
           </li>
          
@@ -66,7 +66,7 @@ function Navbar() {
         </ul> 
       </nav>
       <Route path ="/home" exact strict component={Home}/>
-      <Route path ="/about" exact strict component={About}/>
+      <Route path ="/elevator" exact strict component={Elevator}/>
       
       <Route path ="/experience" exact strict component={Experience}/>
 

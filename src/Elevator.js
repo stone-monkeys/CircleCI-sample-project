@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
-import './About.css';
+import './Elevator.css';
 
 
 
-class About extends Component {
+class Elevator extends Component {
 
     render() {
             
@@ -35,4 +35,4 @@ class About extends Component {
     }
 }
 
-export default About;
+export default Elevator;
