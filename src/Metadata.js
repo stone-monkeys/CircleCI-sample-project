@@ -9,7 +9,7 @@ class Metadata extends Component {
            <div className="app">
               <div className="gallery">
                 <div className="bubbles" id="pone">
-                  <p id="textOne">Solutions Engineer <br/><br/>CircleCI<br/><br/>Jan 2022 - Present</p>
+                  <p id="textOne">Solutions Engineer <br/><br/>CircleCI<br/><br/>${CIRCLE_BRANCH}</p>
                 </div>
                 <div className="bubbles" id="pone">
                   <p id="textOne">Software Engineer<br/><br/>Fidelity Investments<br/><br/>DevOps Integration Squad<br/><br/>August 2020 - Jan 2022</p>
