@@ -37,10 +37,6 @@ function Navbar() {
 
   return (
     <>
-
-
-
-
       <nav className='navbar'>
         <Link to='/home' className='navbar-logo' onClick={closeMobileMenu}>CCI <div className="imglogo"></div></Link>
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
@@ -61,15 +57,12 @@ function Navbar() {
           <li className='nav-item' id="mainls">
             <Link to='/contact' className='nav-links' onClick={closeMobileMenu}>Contact Me</Link>
           </li>
-
-         
         </ul> 
       </nav>
+
       <Route path ="/home" exact strict component={Home}/>
       <Route path ="/elevator" exact strict component={Elevator}/>
-      
       <Route path ="/metadata" exact strict component={Metadata}/>
-
       <Route path ="/contact" exact strict component={Contact}/>
     </>
   );
