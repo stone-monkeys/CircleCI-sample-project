@@ -50,8 +50,6 @@ jobs:
             TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
             
             npm test
-      - run: 
-          command: mkdir ~/test-results
       - store_test_results:
           path: ~/test-results
       - run:
