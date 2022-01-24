@@ -11,7 +11,7 @@ version: 2.1
 # also see that we have limited the job to our main branch. Our code will only 
 # be deployed on changes to this branch
 workflows:
-  heroku_deploy:
+  build_CCI:
     jobs:
       - build
       # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
