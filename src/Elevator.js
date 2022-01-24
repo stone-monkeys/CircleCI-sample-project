@@ -14,21 +14,18 @@ class Elevator extends Component {
                     <p id="pone">
                         How long does it take for your company to generate business value from a decision?
                         
-                        A vital metric for any project is Lead time for Changes, and using our platform you can target this by reducing Cycle Time 
-                        - the time from deciding that you need to make a change to having it in production and the hands of your customers.
+                        Two vital metrics for any project are Success Rate and Mean Time to Recovery, and using CircleCI’s platform you can target these to reduce End-to-end build time by up to 50% by utilizing features such as Test Splitting, caching and docker native executors
                     </p>
                     <p id="pone"> 
-                        We pride ourselves on being the missing link between what Engineers are good at which is ideating and creating awesome 
-                        applications and what Computers are good at - automation.
+                        We pride ourselves on being the missing link between what Engineers are good at which is ideating and creating awesome applications and what Computers are good at - automation.
 
-                        As an industry leader in CI/CD,  we enable our customers to operate above the value line by making Software for organisations 
-                        and individuals an idea problem, not a delivery problem.
 
-                        By allowing Engineering Teams to build, test and deploy software confidently, we make release days low risk, frequent, rapid, cheap and predictable all while enabling you to deliver value to your customer faster
+                        As an industry leader in CI/CD, we enable our customers to operate above the value line by making Software for organisations and individuals an idea problem, not a delivery problem.
+
+
                     </p>
                     <p id="pone">
-                        By allowing Engineering Teams to build, test and deploy software confidently, we make release days low risk, frequent, rapid, cheap and predictable all while enabling you to deliver value to your customer faster
-                    </p>
+                        By allowing Engineering Teams to build, test and deploy software confidently, we at CircleCI make release days low risk, frequent, rapid, cheap and predictable all while enabling you to deliver value to your customer faster                    </p>
                 </div>
            </div>
         );
