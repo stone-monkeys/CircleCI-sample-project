@@ -50,5 +50,7 @@ jobs:
             TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
             
             npm test
+      - store_test_results:
+          path: test-results
       - run:
           echo "${CIRCLE_BRANCH}"
