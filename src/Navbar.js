@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import Elevator from './Elevator.js';
 import Home from './Home.js';
-import Metadata from './Metadata.js';
+import KeyMetrics from './KeyMetrics.js';
 import Contact from './Contact.js';
 import Route from 'react-router-dom/Route';
 import Dropdown from './Dropdown';
@@ -51,18 +51,18 @@ function Navbar() {
           </li>
          
           <li className='nav-item' id="mainls">
-            <Link to='/metadata' className='nav-links' onClick={closeMobileMenu}>Metadata</Link>
+            <Link to='/keyMetrics' className='nav-links' onClick={closeMobileMenu}>Key Metrics</Link>
           </li>
           
           <li className='nav-item' id="mainls">
-            <Link to='/contact' className='nav-links' onClick={closeMobileMenu}>Contact Me</Link>
+            <Link to='/contact' className='nav-links' onClick={closeMobileMenu}>Contact Us</Link>
           </li>
         </ul> 
       </nav>
 
       <Route path ="/home" exact strict component={Home}/>
       <Route path ="/elevator" exact strict component={Elevator}/>
-      <Route path ="/metadata" exact strict component={Metadata}/>
+      <Route path ="/keyMetrics" exact strict component={KeyMetrics}/>
       <Route path ="/contact" exact strict component={Contact}/>
     </>
   );

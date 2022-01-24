@@ -21,13 +21,12 @@ body {
    height: 25vmin;
    border-radius: 5%;
    list-style-type: none;
+   text-align: center;
    padding:2%;
 }
 
-
 #textOne{
-   font-size:1.1vw ; 
-   text-align: center;
+   line-height: 22ex;
 }
 
 /********* SUPER EXTRA SMALL DEVICES ONLY ******/

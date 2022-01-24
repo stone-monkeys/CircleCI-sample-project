@@ -10,8 +10,8 @@ export const MenuItems = [
       cName: 'dropdown-link'
     },
     {
-      title: 'Metadata',
-      path: '/metadata',
+      title: 'KeyMetrics',
+      path: '/keyMetrics',
       cName: 'dropdown-link'
     },
     {
