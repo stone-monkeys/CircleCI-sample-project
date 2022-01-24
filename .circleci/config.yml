@@ -46,6 +46,9 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Run tests 
-          command: npm test
+          command: |
+            TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
+            
+            npm test
       - run:
           echo "${CIRCLE_BRANCH}"
