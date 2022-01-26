@@ -1,0 +1,11 @@
+apiVersion: kconnect.fidelity.github.com/v1alpha1
+kind: Configuration
+spec:
+  global:
+    username: derry@circleci.com
+  providers:
+    eks:
+      region: eu-west-1
+      username: derry@circleci.com
+  versionCheck:
+    lastVersionCheck: "2022-01-26T18:48:07Z"

@@ -25,7 +25,7 @@ class Elevator extends Component {
 
                     </p>
                     <p id="pone">
-                        By allowing Engineering Teams to build, test and deploy software confidently, we at CircleCI make release days low risk, frequent, rapid, cheap and predictable all while enabling you to deliver value to your customer faster                    </p>
+                        By allowing Engineering Teams to build, test and deploy software confidently, we at CircleCI make release days low risk, frequent, rapid, cheap and predictable all with the goal of enabling you to deliver value to your customer faster                    </p>
                 </div>
            </div>
         );
