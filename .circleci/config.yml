@@ -43,7 +43,7 @@ jobs:
   unit_tests:
     docker:
       - image: cimg/node:14.0.0
-    parallelism: 10
+    parallelism: 3
     steps:
       - checkout
       - restore_cache:
@@ -65,10 +65,10 @@ jobs:
           command: |
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
             npm test $TEST
-      # - store_test_results:
-      #     path: ~/project/test-results
-      # - store_artifacts:
-      #     path: ~/project/test-results/junit.xml
+      - store_test_results:
+          path: ~/project/test-results
+      - store_artifacts:
+          path: ~/project/test-results/junit.xml
   # build:
   #   docker:
   #       - image: cimg/node:12.16
