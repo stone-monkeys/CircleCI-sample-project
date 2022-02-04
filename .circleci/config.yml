@@ -8,6 +8,7 @@ version: 2.1
 orbs:
     node: circleci/node@3.0.1
     aws-ecr: circleci/aws-ecr@6.12.0
+    heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 
 executors:
   node:
@@ -36,12 +37,13 @@ workflows:
           tag: $CIRCLE_SHA1
           requires:
             - unit_tests
-      # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only: main
+      
+      - aws-ecr/build-and-push-image: # Use the pre-configured job, deploy-via-git
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
 
 # Collection of steps to run in a CCI build process. We have one job here - build. Build has 6 steps
 # The heroku orb will also add another job - heroku/deploy-via-git
