@@ -46,6 +46,7 @@ jobs:
     parallelism: 3
     steps:
       - checkout
+      - run: mkdir ~/project/test-results
       - restore_cache:
           keys:
               # when lock file changes, use increasingly general patterns to restore cache
