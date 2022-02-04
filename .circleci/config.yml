@@ -30,6 +30,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run: 
+          name: mkdir for test results
+          command: mkdir ~/test-results
       - run:
           name: Update NPM
           command: "sudo npm install -g npm@5"
