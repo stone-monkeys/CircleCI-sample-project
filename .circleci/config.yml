@@ -5,7 +5,8 @@ version: 2.1
 # Using the Herouku orb that has jobs such as heroku/deploy-via-git (line 13)
 # orbs:
 #   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
-
+orbs:
+    node: circleci/node@3.0.1
 # Workflow refers to a set of rules defining a collection of jobs and their run order.
 # In this case the deployment will not be carried out unless our tests pass. We can
 # also see that we have limited the job to our main branch. Our code will only 
@@ -26,57 +27,57 @@ workflows:
 jobs:
   build:
     docker:
-      - image: circleci/node:12.9.1-browsers
-    working_directory: ~/repo
+        - image: cimg/node:12.16
+    parallelism: 5
     steps:
-      - checkout
-      - run: 
-          name: mkdir for test results
-          command: mkdir ~/test-results
-      - run:
-          name: Update NPM
-          command: "sudo npm install -g npm@5"
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - save_cache:
-          paths:
-            - ./node_modules
-            - ~/.npm
-            - ~/.cache
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Run tests 
-          command: |
-            TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
+        - checkout
+        - node/install-packages:
+            pkg-manager: yarn      
+        - run: mkdir ~/junit
+        - run:
+            name: Test application
+            command: |
+                TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split --split-by=timings)
+                yarn test $TEST
+        - run:
+            command: cp junit.xml ~/junit/
+            when: always
+        - store_test_results:
+            path: ~/junit
+        - store_artifacts:
+            path: ~/junit
+
+
+  # build:
+  #   docker:
+  #     - image: circleci/node:12.9.1-browsers
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+  #     - run: 
+  #         name: mkdir for test results
+  #         command: mkdir ~/test-results
+  #     - run:
+  #         name: Update NPM
+  #         command: "sudo npm install -g npm@5"
+  #     - restore_cache:
+  #         key: dependency-cache-{{ checksum "package-lock.json" }}
+  #     - run:
+  #         name: Install Dependencies
+  #         command: npm install
+  #     - save_cache:
+  #         paths:
+  #           - ./node_modules
+  #           - ~/.npm
+  #           - ~/.cache
+  #         key: dependency-cache-{{ checksum "package-lock.json" }}
+  #     - run:
+  #         name: Run tests 
+  #         command: |
+  #           TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
             
-            npm test $TEST -o ~/test-results
-      - store_test_results:
-          path: ~/test-results
-      - run:
-          echo "${CIRCLE_BRANCH}"
-
-
-    # build-and-test:
-    #     docker:
-    #         - image: cimg/node:12.16
-    #     parallelism: 5
-    #     steps:
-    #         - checkout
-    #         - node/install-packages:
-    #             pkg-manager: yarn      
-    #         - run: mkdir ~/junit
-    #         - run:
-    #             name: Test application
-    #             command: |
-    #                 TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split --split-by=timings)
-    #                 yarn test $TEST
-    #         - run:
-    #             command: cp junit.xml ~/junit/
-    #             when: always
-    #         - store_test_results:
-    #             path: ~/junit
-    #         - store_artifacts:
-    #             path: ~/junit
+  #           npm test $TEST -o ~/test-results
+  #     - store_test_results:
+  #         path: ~/test-results
+  #     - run:
+  #         echo "${CIRCLE_BRANCH}"
