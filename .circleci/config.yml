@@ -20,6 +20,9 @@ workflows:
   build_CCI:
     jobs:
       - build
+      - unit_tests:
+          requires: 
+            - build
       # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
       #     requires:
       #       - build
