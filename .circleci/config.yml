@@ -38,9 +38,9 @@ workflows:
           requires:
             - unit_tests
       
-      - aws-ecr/build-and-push-image: # Use the pre-configured job, deploy-via-git
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
           requires:
-            - build
+            - aws-ecr/build-and-push-image
           filters:
             branches:
               only: main
