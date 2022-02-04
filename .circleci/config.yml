@@ -2,7 +2,7 @@
 version: 2.1
 
 # Orbs are a prepared package that contains reusable CircleCI config that can be used across projects
-# Using the Herouku orb that has jobs such as heroku/deploy-via-git (line 13)
+# Using the Herouku orb that has jobs such as heroku/deploy-via-git 
 # orbs:
 #   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 orbs:
