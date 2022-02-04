@@ -7,6 +7,7 @@ version: 2.1
 #   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 orbs:
     node: circleci/node@3.0.1
+    aws-ecr: circleci/aws-ecr@6.12.0
 
 executors:
   node:
@@ -23,6 +24,18 @@ workflows:
       - unit_tests:
           requires: 
             - build
+      # Build and push Docker image to AWS ECR
+      - aws-ecr/build-and-push-image:
+          executor:
+            name: aws-ecr/default
+            use-docker-layer-caching: true
+          attach-workspace: true
+          context: rp-deploy-secrets
+          name: build_push_ecr
+          repo: circle-demo-react
+          tag: $CIRCLE_SHA1
+          requires:
+            - unit_tests
       # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
       #     requires:
       #       - build
@@ -46,7 +59,6 @@ jobs:
     parallelism: 3
     steps:
       - checkout
-      - run: mkdir ~/project/test-results
       - restore_cache:
           keys:
               # when lock file changes, use increasingly general patterns to restore cache
@@ -65,11 +77,9 @@ jobs:
           name: Test application 
           command: |
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
-            npm test $TEST -o ~/project/test-results
-      - store_test_results:
-          path: ~/project/test-results
-      - store_artifacts:
-          path: ~/project/test-results/junit.xml
+            npm test $TEST
+  
+  
   # build:
   #   docker:
   #       - image: cimg/node:12.16
