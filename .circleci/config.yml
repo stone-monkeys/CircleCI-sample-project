@@ -26,7 +26,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: circleci/node:12.9.1-browsers
+      - image: circleci/node:cimg/node:12.16
     working_directory: ~/repo
     steps:
       - checkout
@@ -52,8 +52,31 @@ jobs:
           command: |
             TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
             
-            npm $TEST -o ~/test-results
+            npm test $TEST -o ~/test-results
       - store_test_results:
           path: ~/test-results
       - run:
           echo "${CIRCLE_BRANCH}"
+
+
+    # build-and-test:
+    #     docker:
+    #         - image: cimg/node:12.16
+    #     parallelism: 5
+    #     steps:
+    #         - checkout
+    #         - node/install-packages:
+    #             pkg-manager: yarn      
+    #         - run: mkdir ~/junit
+    #         - run:
+    #             name: Test application
+    #             command: |
+    #                 TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split --split-by=timings)
+    #                 yarn test $TEST
+    #         - run:
+    #             command: cp junit.xml ~/junit/
+    #             when: always
+    #         - store_test_results:
+    #             path: ~/junit
+    #         - store_artifacts:
+    #             path: ~/junit
