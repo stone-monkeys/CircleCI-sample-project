@@ -7,6 +7,11 @@ version: 2.1
 #   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 orbs:
     node: circleci/node@3.0.1
+
+executors:
+  node:
+    docker: 
+      - image: cimg/node:14.0.0
 # Workflow refers to a set of rules defining a collection of jobs and their run order.
 # In this case the deployment will not be carried out unless our tests pass. We can
 # also see that we have limited the job to our main branch. Our code will only 
@@ -26,26 +31,62 @@ workflows:
 # The heroku orb will also add another job - heroku/deploy-via-git
 jobs:
   build:
-    docker:
-        - image: cimg/node:12.16
-    parallelism: 5
+    executor: node
     steps:
-        - checkout
-        - node/install-packages:
-            pkg-manager: yarn      
-        - run: mkdir ~/junit
-        - run:
-            name: Test application
-            command: |
-                TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split --split-by=timings)
-                yarn test 
-        - run:
-            command: cp junit.xml ~/junit/
-            when: always
-        - store_test_results:
-            path: ~/junit
-        - store_artifacts:
-            path: ~/junit
+      - checkout
+      - node/install-packages:
+          override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
+  
+  unit_tests:
+    docker:
+      - image: cimg/node:14.0.0
+    parallelism: 10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+              # when lock file changes, use increasingly general patterns to restore cache
+              - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+              - node-cache-v1-{{ .Branch }}-
+              - node-cache-v1-
+      - run:
+          name: Fetch dependencies
+          command: npm ci
+      - save_cache:
+          paths:
+              - ~/.npm
+              - ~/.cache
+          key: node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run:
+          name: Test application 
+          command: |
+            TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
+            npm test $TEST
+      # - store_test_results:
+      #     path: ~/project/test-results
+      # - store_artifacts:
+      #     path: ~/project/test-results/junit.xml
+  # build:
+  #   docker:
+  #       - image: cimg/node:12.16
+  #   parallelism: 5
+  #   steps:
+  #       - checkout
+  #       - node/install-packages:
+  #           pkg-manager: yarn      
+  #       - run: mkdir ~/junit
+  #       - run:
+  #           name: Test application
+  #           command: |
+  #               TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split --split-by=timings)
+  #               yarn test 
+  #       - run:
+  #           command: cp junit.xml ~/junit/
+  #           when: always
+  #       - store_test_results:
+  #           path: ~/junit
+  #       - store_artifacts:
+  #           path: ~/junit
 
 
   # build:
