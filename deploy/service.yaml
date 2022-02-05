@@ -7,6 +7,6 @@ spec:
   selector:
     app: web
   ports:
-    - port: 90
-      targetPort: 90
+    - port: 80
+      targetPort: 80
       protocol: TCP
