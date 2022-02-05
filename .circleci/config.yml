@@ -8,16 +8,12 @@ version: 2.1
 orbs:
     node: circleci/node@3.0.1
     aws-ecr: circleci/aws-ecr@6.12.0
-    heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
+    heroku: circleci/heroku@1.2.6
 
 executors:
   node:
     docker: 
       - image: cimg/node:14.0.0
-# Workflow refers to a set of rules defining a collection of jobs and their run order.
-# In this case the deployment will not be carried out unless our tests pass. We can
-# also see that we have limited the job to our main branch. Our code will only 
-# be deployed on changes to this branch
 workflows:
   build_CCI:
     jobs:
@@ -25,25 +21,32 @@ workflows:
       - unit_tests:
           requires: 
             - build
-      # Build and push Docker image to AWS ECR
-      - aws-ecr/build-and-push-image:
-          executor:
-            name: aws-ecr/default
-            use-docker-layer-caching: true
-          attach-workspace: true
-          context: rp-deploy-secrets
-          name: build_push_ecr
-          repo: circle-demo-react
-          tag: $CIRCLE_SHA1
-          requires:
+      - heroku/install:
+          requires: 
             - unit_tests
-      
+      - heroku/push-docker-image:
+          requires: 
+            - unit_tests
       - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
           requires:
             - unit_tests
           filters:
             branches:
               only: main
+      - aws-ecr/build-and-push-image:
+          executor:
+            name: aws-ecr/default
+            use-docker-layer-caching: true
+            environment: 
+              AWS_ECR_ACCOUNT_URL: 660990364978.dkr.ecr.eu-west-1.amazonaws.com/db-se/personal-registry
+          attach-workspace: true
+          context: rp-deploy-secrets
+          account-url: AWS_ECR_ACCOUNT_URL
+          name: build_push_ecr
+          repo: personal-registry
+          tag: $CIRCLE_SHA1
+          requires:
+            - unit_tests
 
 # Collection of steps to run in a CCI build process. We have one job here - build. Build has 6 steps
 # The heroku orb will also add another job - heroku/deploy-via-git
@@ -80,6 +83,15 @@ jobs:
           command: |
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
             npm test $TEST
+      
+      - docker/publish:
+          deploy: true
+          name: build_push_for_gke
+          docker-username: DOCKER_USER
+          dockerfile: Dockerfile.prod
+          image: ryanpedersen42/circle-demo-react-prod
+          requires:
+            - integration_tests
   
   
   # build:
