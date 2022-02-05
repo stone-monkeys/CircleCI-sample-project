@@ -31,7 +31,7 @@ workflows:
           context: rp-deploy-secrets
           account-url: AWS_ECR_ACCOUNT_URL
           name: build_push_ecr
-          repo: personal-registry
+          repo: circle-demo-react
           tag: $CIRCLE_SHA1
           requires:
             - unit_tests
