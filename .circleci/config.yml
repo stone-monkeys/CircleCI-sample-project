@@ -24,7 +24,8 @@ workflows:
       - unit_tests:
           requires: 
             - build
-      - kconnect
+      - kconnect:
+          context: rp-deploy-secrets
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
