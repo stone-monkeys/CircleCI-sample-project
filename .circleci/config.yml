@@ -11,6 +11,7 @@ orbs:
     heroku: circleci/heroku@1.2.6
     helm: circleci/helm@1.2.0
     aws-eks: circleci/aws-eks@1.0.0
+    kustomize: finc/kustomize@0.0.2
 
 executors:
   node:
@@ -23,6 +24,7 @@ workflows:
       - unit_tests:
           requires: 
             - build
+      - build_kustomize
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
@@ -79,6 +81,12 @@ jobs:
           command: |
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
             npm test $TEST
+  
+  build_kustomize:
+    docker:
+      - image: 'circleci/golang:1.15'
+    steps:
+      - kustomize/install
       
   helm_eks:
     docker:
