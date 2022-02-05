@@ -11,7 +11,7 @@ orbs:
     heroku: circleci/heroku@1.2.6
     helm: circleci/helm@1.2.0
     aws-eks: circleci/aws-eks@1.0.0
-    kustomize: finc/kustomize@0.0.2
+    k-connect: db-cci-ns/k-connect@0.5.0
 
 executors:
   node:
@@ -24,7 +24,7 @@ workflows:
       - unit_tests:
           requires: 
             - build
-      - build_kustomize
+      - kconnect
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
@@ -82,12 +82,26 @@ jobs:
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
             npm test $TEST
   
-  build_kustomize:
+  kconnect:
     docker:
-      - image: 'circleci/golang:1.15'
+      - image: 'cimg/base:2021.04'
     steps:
       - checkout
-      - kustomize/install
+      - k-connect/install
+      - k-connect/configure:
+          config_file_path: >-
+            https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+      - k-connect/use:
+          alias: eks-test-kconnect
+          cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/kconnect'
+          cluster_provider: eks
+      - run:
+          command: kubectl get all
+          name: Test kconnect connection
+      - k-connect/to:
+          alias: eks-test-kconnect
+      - k-connect/ls
+      - k-connect/version
       
   helm_eks:
     docker:
