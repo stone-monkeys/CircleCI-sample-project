@@ -20,32 +20,32 @@ executors:
 workflows:
   build_CCI:
     jobs:
-      - build
-      - unit_tests:
-          requires: 
-            - build
+      # - build
+      # - unit_tests:
+      #     requires: 
+      #       - build
       - kconnect:
-          context: rp-deploy-secrets
-      - aws-ecr/build-and-push-image:
-          executor:
-            name: aws-ecr/default
-            use-docker-layer-caching: true
-          attach-workspace: true
-          context: rp-deploy-secrets
-          account-url: AWS_ECR_ACCOUNT_URL
-          name: build_push_ecr
-          repo: circle-demo-react
-          tag: $CIRCLE_SHA1
-          requires:
-            - unit_tests
-      - hold_eks:
-          type: approval
-          requires:
-            - build_push_ecr
-      - helm_eks:
-          context: rp-deploy-secrets
-          requires:
-            - hold_eks
+          context: db-CE-deploy
+      # - aws-ecr/build-and-push-image:
+      #     executor:
+      #       name: aws-ecr/default
+      #       use-docker-layer-caching: true
+      #     attach-workspace: true
+      #     context: rp-deploy-secrets
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     name: build_push_ecr
+      #     repo: circle-demo-react
+      #     tag: $CIRCLE_SHA1
+      #     requires:
+      #       - unit_tests
+      # - hold_eks:
+      #     type: approval
+      #     requires:
+      #       - build_push_ecr
+      # - helm_eks:
+      #     context: rp-deploy-secrets
+      #     requires:
+      #       - hold_eks
 
 # Collection of steps to run in a CCI build process. We have one job here - build. Build has 6 steps
 # The heroku orb will also add another job - heroku/deploy-via-git
