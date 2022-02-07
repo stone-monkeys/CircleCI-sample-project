@@ -24,18 +24,18 @@ workflows:
       # - unit_tests:
       #     requires: 
       #       - build
-      # - kconnect:
-      #     context: db-CE-deploy
-      - aws-ecr/build-and-push-image:
-          executor:
-            name: aws-ecr/default
-            use-docker-layer-caching: true
-          attach-workspace: true
-          context: rp-deploy-secrets
-          account-url: AWS_ECR_ACCOUNT_URL
-          name: build_push_ecr
-          repo: circle-demo-react
-          tag: $CIRCLE_SHA1
+      - kconnect:
+          context: db-CE-deploy
+      # - aws-ecr/build-and-push-image:
+      #     executor:
+      #       name: aws-ecr/default
+      #       use-docker-layer-caching: true
+      #     attach-workspace: true
+      #     context: rp-deploy-secrets
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     name: build_push_ecr
+      #     repo: circle-demo-react
+      #     tag: $CIRCLE_SHA1
           # requires:
           #   - unit_tests
       # - hold_eks:
