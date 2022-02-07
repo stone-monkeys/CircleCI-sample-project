@@ -1,15 +1,8 @@
-# indicated what version of circleci is running. Essential to state this due to feature updates etc
 version: 2.1
 
-# Orbs are a prepared package that contains reusable CircleCI config that can be used across projects
-# Using the Herouku orb that has jobs such as heroku/deploy-via-git 
-# orbs:
-#   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 orbs:
     node: circleci/node@3.0.1
     aws-ecr: circleci/aws-ecr@6.12.0
-    heroku: circleci/heroku@1.2.6
-    helm: circleci/helm@1.2.0
     aws-eks: circleci/aws-eks@1.0.0
     k-connect: db-cci-ns/k-connect@0.5.0
 
@@ -45,8 +38,6 @@ workflows:
           requires:
             - hold_eks
 
-# Collection of steps to run in a CCI build process. We have one job here - build. Build has 6 steps
-# The heroku orb will also add another job - heroku/deploy-via-git
 jobs:
   build:
     executor: node
@@ -63,7 +54,6 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-              # when lock file changes, use increasingly general patterns to restore cache
               - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
               - node-cache-v1-{{ .Branch }}-
               - node-cache-v1-
@@ -102,61 +92,3 @@ jobs:
           alias: eks-test-kconnect
       - k-connect/ls
       - k-connect/version
-
-  
-  # build:
-  #   docker:
-  #       - image: cimg/node:12.16
-  #   parallelism: 5
-  #   steps:
-  #       - checkout
-  #       - node/install-packages:
-  #           pkg-manager: yarn      
-  #       - run: mkdir ~/junit
-  #       - run:
-  #           name: Test application
-  #           command: |
-  #               TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split --split-by=timings)
-  #               yarn test 
-  #       - run:
-  #           command: cp junit.xml ~/junit/
-  #           when: always
-  #       - store_test_results:
-  #           path: ~/junit
-  #       - store_artifacts:
-  #           path: ~/junit
-
-
-  # build:
-  #   docker:
-  #     - image: circleci/node:12.9.1-browsers
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - run: 
-  #         name: mkdir for test results
-  #         command: mkdir ~/test-results
-  #     - run:
-  #         name: Update NPM
-  #         command: "sudo npm install -g npm@5"
-  #     - restore_cache:
-  #         key: dependency-cache-{{ checksum "package-lock.json" }}
-  #     - run:
-  #         name: Install Dependencies
-  #         command: npm install
-  #     - save_cache:
-  #         paths:
-  #           - ./node_modules
-  #           - ~/.npm
-  #           - ~/.cache
-  #         key: dependency-cache-{{ checksum "package-lock.json" }}
-  #     - run:
-  #         name: Run tests 
-  #         command: |
-  #           TEST=$(circleci tests glob **/__tests__/*.js | circleci tests split)
-            
-  #           npm test $TEST -o ~/test-results
-  #     - store_test_results:
-  #         path: ~/test-results
-  #     - run:
-  #         echo "${CIRCLE_BRANCH}"
