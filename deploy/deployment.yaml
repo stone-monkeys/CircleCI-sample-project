@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: 660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:cf437266b2edf1f2d86ddca889eb677c934d0063
+          image: 660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:${CIRCLE_SHA1}
           imagePullPolicy: Always
           resources: {}
           ports:
