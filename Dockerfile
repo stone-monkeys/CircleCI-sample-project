@@ -1,5 +1,7 @@
-FROM node:10 AS ui-build
-WORKDIR /usr/src/app
+FROM node:13.12.0-alpine as build
+
+WORKDIR /app
+RUN pwd
 COPY my-app/ ./my-app/
 RUN cd my-app && npm install && npm run build
 
