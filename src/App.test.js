@@ -1,26 +1,36 @@
-import { add } from './math';
+import React from 'react';
+import { render } from '@testing-library/react';
+import App from './App';
 
-describe('Addition testing', () => {
-    test('2 + 2 = 4', () => {
-        expect(add(2, 2)).toBe(4);
-      });
+test('has welcome text', () => {
+  const { getByText } = render(<App />);
+  const linkElement = getByText(/tell/i);
+  expect(linkElement).toBeInTheDocument();
+});
 
-      test('2 + 3 = 5', () => {
-        expect(add(2, 3)).toBe(5);
-      });   
+// import { add } from './math';
 
-      test('2 + 5 = 7', () => {
-        expect(add(2, 5)).toBe(7);
-      });    
+// describe('Addition testing', () => {
+//     test('2 + 2 = 4', () => {
+//         expect(add(2, 2)).toBe(4);
+//       });
 
-      test('2 + 7 = 9', () => {
-        expect(add(2, 7)).toBe(9);
-      });    
+//       test('2 + 3 = 5', () => {
+//         expect(add(2, 3)).toBe(5);
+//       });   
 
-      test('2 + 20 = 22', () => {
-        expect(add(2, 20)).toBe(22);
-      });
-})
+//       test('2 + 5 = 7', () => {
+//         expect(add(2, 5)).toBe(7);
+//       });    
+
+//       test('2 + 7 = 9', () => {
+//         expect(add(2, 7)).toBe(9);
+//       });    
+
+//       test('2 + 20 = 22', () => {
+//         expect(add(2, 20)).toBe(22);
+//       });
+// })
 
 // import { render, screen, fireEvent  } from '@testing-library/react';
 // import App from './App';
