@@ -95,3 +95,6 @@ jobs:
       - run:
           name: Deploy using Kustomize
           command: kubectl apply -k ./deploy
+      - run:
+          name: KGA
+          command: kubectl get all
