@@ -29,7 +29,7 @@ workflows:
       #     type: approval
       #     requires:
       #       - build_push_ecr
-      - kconnect:
+      - kconnect-and-deploy:
           context: db-CE-deploy
           requires:
             - build_push_ecr
@@ -73,7 +73,7 @@ jobs:
       - store_artifacts:
           path: ~/project/test-results/junit.xml
   
-  kconnect:
+  kconnect-and-deploy:
     docker:
       - image: 'cimg/base:2021.04'
     environment:
@@ -92,5 +92,8 @@ jobs:
           name: Test kconnect connection
       - k-connect/to:
           alias: eks-test-kconnect
-      - k-connect/ls
-      - k-connect/version
+      - run:
+          name: Deploy using Kustomize
+          command: |
+            cd project/deploy
+            kubectl apply -k .
