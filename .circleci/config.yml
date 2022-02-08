@@ -94,7 +94,4 @@ jobs:
           alias: eks-test-kconnect
       - run:
           name: Deploy using Kustomize
-          command: |
-            pwd
-            cd project/deploy
-            kubectl apply -k .
+          command: kubectl apply -k ./deploy
