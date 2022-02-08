@@ -9,10 +9,10 @@ orbs:
 workflows:
   build_CCI:
     jobs:
-      # - build
-      # - unit_tests:
-      #     requires: 
-      #       - build
+      - build
+      - unit_tests:
+          requires: 
+            - build
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
@@ -23,16 +23,16 @@ workflows:
           name: build_push_ecr
           repo: circle-demo-react
           tag: $CIRCLE_SHA1
-          # requires:
-          #   - unit_tests
-      # - hold_eks:
-      #     type: approval
-      #     requires:
-      #       - build_push_ecr
+          requires:
+            - unit_tests
+      - hold_eks:
+          type: approval
+          requires:
+            - build_push_ecr
       - kconnect-and-deploy:
           context: db-CE-deploy
           requires:
-            - build_push_ecr
+            - hold_eks
 
 jobs:
   build:
