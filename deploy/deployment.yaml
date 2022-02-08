@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: nginx-webapp
-      strategy: {}
   template:
     metadata:
       creationTimestamp: null
@@ -18,7 +17,7 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: 660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:2bf124ec65a492c0e5839207996759c7a3d16a67
+          image: 660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:${CIRCLE_SHA1}
           imagePullPolicy: Always
           resources: {}
           ports:
