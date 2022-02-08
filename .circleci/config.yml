@@ -85,7 +85,7 @@ jobs:
             https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
       - k-connect/use:
           alias: eks-test-kconnect
-          cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-demo-cluster'
+          cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
           cluster_provider: eks
       - run:
           command: kubectl get all
