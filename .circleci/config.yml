@@ -68,7 +68,7 @@ jobs:
           command: |
             touch junit.xml
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
-            npm test $TEST -o junit.xml
+            npm test $TEST
       - store_test_results:
           path: ~/project/test-results
       - store_artifacts:
