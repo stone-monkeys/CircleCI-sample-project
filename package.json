@@ -43,7 +43,9 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.1.0"
+    "gh-pages": "^3.1.0",
+    "jest": "^27.5.0",
+    "jest-junit": "^13.0.0"
   },
   "jest-junit": {
     "suiteName": "jest tests",
