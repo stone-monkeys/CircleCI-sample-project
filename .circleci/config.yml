@@ -54,7 +54,6 @@ jobs:
               - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
               - node-cache-v1-{{ .Branch }}-
               - node-cache-v1-
-      - run: mkdir ~/project/test-results
       - run:
           name: Fetch dependencies
           command: npm ci
