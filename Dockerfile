@@ -1,10 +1,9 @@
 FROM node:13.12.0-alpine as build
 
 WORKDIR /app
-RUN pwd && ls -a
-COPY my-app/ ./my-app/
-RUN cd my-app && npm install && npm run build
+COPY package*.json ./
 
+RUN npm install --silent && npm run build
 
 FROM nginx:alpine
 
@@ -16,7 +15,7 @@ COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy from the stahg 1
-COPY --from=ui-build /usr/src/app/my-app/build/ /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 4200 80
 
