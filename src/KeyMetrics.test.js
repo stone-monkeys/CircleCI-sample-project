@@ -1,4 +1,4 @@
-import { multiply } from './math';
+const multiply = (a, b) => a * b;
 
 describe('Multiplication testing', () => {      
     test('3 * 1 = 3', () => {

@@ -1,5 +1,4 @@
-import { add } from './math';
-
+const add = (a, b) => a + b;
 describe('Addition testing', () => {
     test('2 + 2 = 4', () => {
         expect(add(2, 2)).toBe(4);
