@@ -1,4 +1,4 @@
-import { add } from '../math';
+import { add } from './math';
 
 describe('Addition testing', () => {
     test('2 + 2 = 4', () => {

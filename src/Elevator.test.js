@@ -1,4 +1,4 @@
-import { divide } from '../math';
+import { divide } from './math';
 
 describe('Division testing', () => {
       
