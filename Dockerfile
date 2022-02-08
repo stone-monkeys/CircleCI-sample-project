@@ -1,7 +1,7 @@
 FROM node:13.12.0-alpine as build
 
 WORKDIR /app
-RUN pwd
+RUN pwd && ls -a
 COPY my-app/ ./my-app/
 RUN cd my-app && npm install && npm run build
 
