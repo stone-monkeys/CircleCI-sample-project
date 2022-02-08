@@ -1,25 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-demo
+  creationTimestamp: null
+  name: nginx-webapp
   namespace: default
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
-      app: web
+      app: nginx-webapp
+      strategy: {}
   template:
     metadata:
+      creationTimestamp: null
       labels:
-        app: web
+        app: nginx-webapp
     spec:
       containers:
-        - name: back-end
+        - name: webapp
           image: 660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:2bf124ec65a492c0e5839207996759c7a3d16a67
           imagePullPolicy: Always
+          resources: {}
           ports:
             - containerPort: 80
-      restartPolicy: Always
+status: {}
 
 
 
