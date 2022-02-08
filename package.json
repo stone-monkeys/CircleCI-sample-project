@@ -10,8 +10,8 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
-    "babel-jest": "^27.5.0",
-    "jest": "^27.5.0",
+    "babel-jest": "^26.6.0",
+    "jest": "^26.6.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.6.4",
     "react-bootstrap-validation": "^0.1.11",
@@ -24,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test --ci --coverage --reporters=default --reporters=jest-junit --addFileAttribute=true",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,6 +46,19 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.1.0"
+    "@testing-library/jest-dom": "^5.16.2",
+    "gh-pages": "^3.1.0",
+    "jest-junit": "^13.0.0",
+    "jest-watch-typeahead": "^0.6.5"
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": ".",
+    "addFileAttribute": "true",
+    "outputName": "test-results/junit.xml",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
   }
 }
