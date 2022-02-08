@@ -1,20 +1,42 @@
-FROM node:13.12.0-alpine as build
+FROM node:10 AS ui-build
+WORKDIR /usr/src/app
+COPY my-app/ ./my-app/
+RUN cd my-app && npm install && npm run build
 
-WORKDIR /app
 
-COPY package*.json ./
+FROM nginx:alpine
 
-RUN npm install --silent
+#!/bin/sh
 
-COPY . ./
+COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
 
-RUN npm run build
+## Remove default nginx index page
+RUN rm -rf /usr/share/nginx/html/*
 
-# production environment
-FROM nginx:stable-alpine
+# Copy from the stahg 1
+COPY --from=ui-build /usr/src/app/my-app/build/ /usr/share/nginx/html
 
-COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 4200 80
 
-EXPOSE 80
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
-CMD ["nginx", "-g", "daemon off;"]
+# FROM node:13.12.0-alpine as build
+
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN npm install --silent
+
+# COPY . ./
+
+# RUN npm run build
+
+# # production environment
+# FROM nginx:stable-alpine
+
+# COPY --from=build /app/build /usr/share/nginx/html
+
+# EXPOSE 80
+
+# CMD ["nginx", "-g", "daemon off;"]
