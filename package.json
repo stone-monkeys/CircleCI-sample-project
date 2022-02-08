@@ -21,7 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "rreact-scripts test --ci --coverage --reporters=default --reporters=jest-junit --addFileAttribute=true",
+    "test": "react-scripts test --ci --coverage --reporters=default --reporters=jest-junit --addFileAttribute=true",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
