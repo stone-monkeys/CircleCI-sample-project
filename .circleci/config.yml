@@ -54,6 +54,7 @@ jobs:
               - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
               - node-cache-v1-{{ .Branch }}-
               - node-cache-v1-
+      - run: mkdir ~/junit
       - run:
           name: Fetch dependencies
           command: npm ci
@@ -67,6 +68,13 @@ jobs:
           command: |
             TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
             npm test $TEST
+      - run:
+          command: cp junit.xml ~/junit/
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
   
   kconnect:
     docker:
