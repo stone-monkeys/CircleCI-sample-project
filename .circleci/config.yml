@@ -25,14 +25,10 @@ workflows:
           tag: $CIRCLE_SHA1
           requires:
             - unit_tests
-      - hold_eks:
-          type: approval
-          requires:
-            - build_push_ecr
       - kconnect-and-deploy:
           context: db-CE-deploy
           requires:
-            - hold_eks
+            - build_push_ecr
 
 jobs:
   build:
