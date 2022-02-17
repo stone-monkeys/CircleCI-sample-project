@@ -10,9 +10,7 @@ workflows:
   build_CCI:
     jobs:
       - build
-      - unit_tests:
-          requires: 
-            - build
+      - unit_tests
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
@@ -25,10 +23,11 @@ workflows:
           tag: $CIRCLE_SHA1
           requires:
             - unit_tests
-      - kconnect-and-deploy:
-          context: db-CE-deploy
-          requires:
-            - build_push_ecr
+            - build
+      # - kconnect-and-deploy:
+      #     context: db-CE-deploy
+      #     requires:
+      #       - build_push_ecr
 
 jobs:
   build:
