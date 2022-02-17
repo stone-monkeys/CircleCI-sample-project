@@ -20,7 +20,6 @@ workflows:
           account-url: AWS_ECR_ACCOUNT_URL
           name: build_push_ecr
           repo: circle-demo-react
-          remote-docker-layer-caching: true
           tag: $CIRCLE_SHA1
           requires:
             - unit_tests
