@@ -24,10 +24,10 @@ workflows:
           requires:
             - unit_tests
             - build
-      - kconnect-and-deploy:
-          context: db-CE-deploy
-          requires:
-            - build_push_ecr
+      # - kconnect-and-deploy:
+      #     context: db-CE-deploy
+      #     requires:
+      #       - build_push_ecr
 
 jobs:
   build:
