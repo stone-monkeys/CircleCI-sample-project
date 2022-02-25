@@ -26,10 +26,12 @@ workflows:
             - build
       - hold:
           type: approval
+          requires:
+            - build_push_ecr
       - kconnect-and-deploy:
           context: db-CE-deploy
           requires:
-            - build_push_ecr
+            - hold
 
 jobs:
   build:
