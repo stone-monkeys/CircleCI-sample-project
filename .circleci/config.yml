@@ -3,8 +3,8 @@ version: 2.1
 orbs:
     node: circleci/node@3.0.1
     aws-ecr: circleci/aws-ecr@6.12.0
-    aws-eks: circleci/aws-eks@1.0.0
     k-connect: db-cci-ns/k-connect@0.5.0
+    snyk: snyk/snyk@1.1.2
 
 workflows:
   build_CCI:
@@ -24,6 +24,7 @@ workflows:
           requires:
             - unit_tests
             - build
+      - snyk/scan-iac
       - hold:
           type: approval
           requires:
@@ -41,6 +42,7 @@ jobs:
       - checkout
       - node/install-packages:
           override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
+      - snyk/scan
   
   unit_tests:
     docker:
