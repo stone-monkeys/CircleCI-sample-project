@@ -1,19 +1,15 @@
-import React, { Component } from 'react';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
-import Route from 'react-router-dom/Route';
-import './Home.css';
-import Elevator from './Elevator';
-import Navbar from './Navbar.js';
+import React, { Component } from "react";
+import "./Home.css";
 
+// eslint-disable-next-line react/prefer-stateless-function
 class Home extends Component {
-
   render() {
     return (
       <div className="app">
         <div className="homePage">
-          <div id="profile-photo"></div>
-            <div id="name">Continuous Delivery</div>
-            <div id="occupation">@CircleCI</div> 
+          <div id="profile-photo" />
+          <div id="name">Continuous Delivery</div>
+          <div id="occupation">@CircleCI</div>
         </div>
       </div>
     );
