@@ -42,7 +42,8 @@ jobs:
       - checkout
       - node/install-packages:
           override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
-      - snyk/scan
+      - snyk/scan:
+          fail-on-issues: false
   
   unit_tests:
     docker:
