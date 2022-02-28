@@ -12,10 +12,12 @@ orbs:
 workflows:
   build_CCI:
     jobs:
-      # - build
-      # - unit_tests
-      - eslint/eslint
-      - github-super-linter/lint
+      - build
+      - unit_tests
+      - github-super-linter/lint:
+          requires:
+            - build
+            - unit_tests
       # - aws-ecr/build-and-push-image:
       #     executor:
       #       name: aws-ecr/default
