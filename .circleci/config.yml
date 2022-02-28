@@ -7,12 +7,14 @@ orbs:
     snyk: snyk/snyk@1.1.2
     slack: circleci/slack@4.8.3
     github-super-linter: circleci/github-super-linter@1.0.1
+    eslint: arrai/eslint@4.0.0
 
 workflows:
   build_CCI:
     jobs:
       # - build
       # - unit_tests
+      - eslint/eslint
       - github-super-linter/lint
       # - aws-ecr/build-and-push-image:
       #     executor:
