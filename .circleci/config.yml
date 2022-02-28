@@ -5,9 +5,9 @@ orbs:
     aws-ecr: circleci/aws-ecr@6.12.0
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
-    slack: circleci/slack@4.8.3
-    github-super-linter: circleci/github-super-linter@1.0.1
-    eslint: arrai/eslint@4.0.0
+    # slack: circleci/slack@4.8.3
+    # github-super-linter: circleci/github-super-linter@1.0.1
+    # eslint: arrai/eslint@4.0.0
 
 workflows:
   build_CCI:
@@ -31,9 +31,6 @@ workflows:
           type: approval
           requires:
             - build_push_ecr
-      - slack/on-hold:
-          requires:
-            - hold
       - kconnect-and-deploy-eks:
           context: db-CE-deploy
           requires:
