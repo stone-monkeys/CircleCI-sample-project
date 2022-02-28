@@ -11,10 +11,6 @@ workflows:
     jobs:
       - build
       - unit_tests
-      - snyk_docker_scan:
-          requires: 
-            - unit_tests
-            - build
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
@@ -26,7 +22,8 @@ workflows:
           repo: circle-demo-react
           tag: $CIRCLE_SHA1
           requires:
-            - snyk_docker_scan
+            - build
+            - unit_tests
       - hold:
           type: approval
           requires:
@@ -76,23 +73,6 @@ jobs:
           path: ~/project/test-results
       - store_artifacts:
           path: ~/project/test-results/junit.xml
-  
-  snyk_docker_scan:
-    docker:
-      - image: 'circleci/buildpack-deps:stretch'
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          command: 'docker build -t $IMAGE_NAME:$CIRCLE_SHA1 .'
-          name: Build Docker image
-      - snyk/scan:
-          docker-image-name: '$IMAGE_NAME:$CIRCLE_SHA1'
-          fail-on-issues: false
-          monitor-on-build: true
-          project: '${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}-container'
-          severity-threshold: high
-          target-file: Dockerfile
   
   kconnect-and-deploy:
     docker:
