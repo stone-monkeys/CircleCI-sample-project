@@ -5,6 +5,7 @@ orbs:
     aws-ecr: circleci/aws-ecr@6.12.0
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
+    slack: circleci/slack@4.8.3
 
 workflows:
   build_CCI:
@@ -28,7 +29,10 @@ workflows:
           type: approval
           requires:
             - build_push_ecr
-      - kconnect-and-deploy:
+      - slack/on-hold:
+          requires:
+            - hold
+      - kconnect-and-deploy-eks:
           context: db-CE-deploy
           requires:
             - hold
@@ -74,7 +78,7 @@ jobs:
       - store_artifacts:
           path: ~/project/test-results/junit.xml
   
-  kconnect-and-deploy:
+  kconnect-and-deploy-eks:
     docker:
       - image: 'cimg/base:2021.04'
     environment:
