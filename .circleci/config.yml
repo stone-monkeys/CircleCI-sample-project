@@ -31,10 +31,10 @@ workflows:
           type: approval
           requires:
             - build_push_ecr
-      # - kconnect-and-deploy-eks:
-      #     context: db-CE-deploy
-      #     requires:
-      #       - hold
+      - kconnect-and-deploy-eks:
+          context: db-CE-deploy
+          requires:
+            - hold
 
 jobs:
   build:
