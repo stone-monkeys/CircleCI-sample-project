@@ -40,6 +40,7 @@ workflows:
           requires:
             - build-and-push-image
       - update-deployment:
+          context: rp-deploy-secrets
           requires:
             - hold
           filters:
