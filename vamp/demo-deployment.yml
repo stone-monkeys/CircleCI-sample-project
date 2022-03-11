@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ${AWS_ECR_ACCOUNT_URL}/circle-demo-react-${VERSION}
-  namespace: production
+  namespace: default
   labels:
     app: ${AWS_ECR_ACCOUNT_URL}/circle-demo-react
     version: "${VERSION}"
