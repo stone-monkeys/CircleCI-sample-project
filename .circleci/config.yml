@@ -163,7 +163,7 @@ jobs:
             kubectl config set-context cci --user=derrybot --namespace=default --cluster=db-cluster-cci
             kubectl config use-context cci
       - kubernetes/create-or-update-resource:
-          namespace: production
+          namespace: default
           resource-file-path: modified-deployment.yaml
       - run: kubectl rollout status -f modified-deployment.yaml
       - run:
@@ -199,7 +199,7 @@ jobs:
       
       - run:
           name: Delete deployment << pipeline.parameters.version >>
-          command: kubectl -n production delete deployment circleci-demo-app-v<<pipeline.parameters.version>>
+          command: kubectl -n default delete deployment circleci-demo-app-v<<pipeline.parameters.version>>
       - run:
           name: Capture Contour routes as DAG
           command: |
