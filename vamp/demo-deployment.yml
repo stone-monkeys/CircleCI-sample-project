@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: circleci-demo-app-${VERSION}
+  name: circleci-demo-app-1.0.12
   namespace: default
   labels:
     app: circleci-demo-app
-    version: "${VERSION}"
+    version: "1.0.12"
 spec:
   replicas: 2
   selector:
     matchLabels:
       app: circleci-demo-app
-      version: "${VERSION}"
+      version: "1.0.12"
   template:
     metadata:
       labels:
         app: circleci-demo-app
-        version: "${VERSION}"
+        version: "1.0.12"
     spec:
       containers:
       - name: circleci-demo-app
