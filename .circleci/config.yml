@@ -11,6 +11,16 @@ jobs:
       - checkout
       - run: echo hello_build
   
+  lint:
+    docker:
+      - image: cimg/base:edge-18.04
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo hello_build
+  
   acceptance_test_1:
     docker:
       - image: cimg/base:edge-18.04
@@ -65,18 +75,23 @@ workflows:
   build_accept_deploy:
     jobs:
       - build
+      - lint
       - acceptance_test_1:
           requires:
             - build
+            - lint
       - acceptance_test_2:
           requires:
             - build
+            - lint
       - acceptance_test_3:
           requires:
             - build
+            - lint
       - acceptance_test_4:
           requires:
             - build
+            - lint
       - deploy:
           requires:
             - acceptance_test_1
