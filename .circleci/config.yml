@@ -16,7 +16,7 @@ jobs:
       - image: cimg/base:edge-18.04
         auth:
           username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run: echo hello_build
