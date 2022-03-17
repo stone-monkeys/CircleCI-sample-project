@@ -114,7 +114,4 @@ workflows:
             - build_docker_push_ecr
       - deploy:
           requires:
-            - acceptance_test_1
-            - acceptance_test_2
-            - acceptance_test_3
-            - acceptance_test_4
+            - hold
