@@ -6,6 +6,7 @@ orbs:
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
     sonarcloud: sonarsource/sonarcloud@1.0.1
+    heroku: circleci/heroku@0.0.10
 
 workflows:
   build_CCI:
@@ -29,6 +30,12 @@ workflows:
           type: approval
           requires:
             - build_push_ecr
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
       # - kconnect-and-deploy-eks:
       #     context: db-CE-deploy
       #     requires:
