@@ -9,7 +9,6 @@ class Home extends Component {
         <div className="homePage">
           <div id="profile-photo" />
           <div id="name">Continuous Delivery</div>
-          <div id="occupation">@CircleCI</div>
         </div>
       </div>
     );
