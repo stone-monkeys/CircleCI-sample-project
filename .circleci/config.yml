@@ -35,10 +35,10 @@ workflows:
           filters:
             branches:
               only: main
-      - kconnect-and-deploy-eks:
-          context: db-CE-deploy
-          requires:
-            - hold
+      # - kconnect-and-deploy-eks:
+      #     context: db-CE-deploy
+      #     requires:
+      #       - hold
 
 jobs:
   build:
