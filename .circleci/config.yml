@@ -58,30 +58,32 @@ jobs:
       - image: cimg/node:14.0.0
     parallelism: 3
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-              - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-              - node-cache-v1-{{ .Branch }}-
-              - node-cache-v1-
-      - run:
-          name: Fetch dependencies
-          command: npm ci
-      - save_cache:
-          paths:
-              - ~/.npm
-              - ~/.cache
-          key: node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run:
-          name: Test application 
-          command: |
-            touch junit.xml
-            TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
-            npm test $TEST
-      - store_test_results:
-          path: ~/project/test-results
-      - store_artifacts:
-          path: ~/project/test-results/junit.xml
+      - buildevents/with_job_span:
+          steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+                    - node-cache-v1-{{ .Branch }}-
+                    - node-cache-v1-
+            - run:
+                name: Fetch dependencies
+                command: npm ci
+            - save_cache:
+                paths:
+                    - ~/.npm
+                    - ~/.cache
+                key: node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - run:
+                name: Test application 
+                command: |
+                  touch junit.xml
+                  TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
+                  npm test $TEST
+            - store_test_results:
+                path: ~/project/test-results
+            - store_artifacts:
+                path: ~/project/test-results/junit.xml
   
   kconnect-and-deploy-eks:
     docker:
