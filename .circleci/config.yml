@@ -12,6 +12,9 @@ workflows:
   build_CCI:
     jobs:
       - build
+      - watch:
+          requires:
+            - build
       - unit_tests
       - aws-ecr/build-and-push-image:
           executor:
@@ -52,6 +55,12 @@ jobs:
           override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
       - snyk/scan:
           fail-on-issues: false
+  
+  watch:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - buildevents/watch_build_and_finish
   
   unit_tests:
     docker:
