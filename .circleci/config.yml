@@ -6,6 +6,7 @@ orbs:
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
+    buildevents: honeycombio/buildevents@0.5.0
 
 workflows:
   build_CCI:
@@ -45,6 +46,7 @@ jobs:
     docker: 
       - image: cimg/node:14.0.0
     steps:
+      - buildevents/start_trace
       - checkout
       - node/install-packages:
           override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
