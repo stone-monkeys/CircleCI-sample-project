@@ -6,7 +6,7 @@ orbs:
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
-    buildevents: honeycombio/buildevents@0.5.0
+    buildevents: honeycombio/buildevents@0.2.7
 
 workflows:
   build_CCI:
