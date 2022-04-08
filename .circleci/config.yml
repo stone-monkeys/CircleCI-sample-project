@@ -11,11 +11,16 @@ orbs:
 workflows:
   build_CCI:
     jobs:
-      - build
+      - setup
+      - build:
+          requires:
+            - setup
       - watch:
           requires:
-            - build
-      - unit_tests
+            - setup
+      - unit_tests:
+          requires:
+            - setup
       - aws-ecr/build-and-push-image:
           executor:
             name: aws-ecr/default
@@ -49,13 +54,20 @@ jobs:
     docker: 
       - image: cimg/node:14.0.0
     steps:
-      - buildevents/start_trace
-      - checkout
-      - node/install-packages:
-          override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
-      - snyk/scan:
-          fail-on-issues: false
+      - buildevents/with_job_span:
+          steps:
+            - checkout
+            - node/install-packages:
+                override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
+            - snyk/scan:
+                fail-on-issues: false
   
+  setup:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - buildevents/start_trace 
+
   watch:
     docker:
       - image: cimg/base:stable
@@ -99,23 +111,25 @@ jobs:
       - image: 'cimg/base:2021.04'
     environment:
     steps:
-      - checkout
-      - k-connect/install 
-      - k-connect/configure:
-          config_file_path: >-
-            https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-      - k-connect/use:
-          alias: eks-test-kconnect
-          cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
-          cluster_provider: eks
-      - run:
-          command: kubectl get all
-          name: Test kconnect connection
-      - k-connect/to:
-          alias: eks-test-kconnect
-      - run:
-          name: Deploy using Kustomize
-          command: kubectl apply -k ./deploy
-      - run:
-          name: KGA
-          command: kubectl get all
+      - buildevents/with_job_span:
+          steps:
+            - checkout
+            - k-connect/install 
+            - k-connect/configure:
+                config_file_path: >-
+                  https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+            - k-connect/use:
+                alias: eks-test-kconnect
+                cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
+                cluster_provider: eks
+            - run:
+                command: kubectl get all
+                name: Test kconnect connection
+            - k-connect/to:
+                alias: eks-test-kconnect
+            - run:
+                name: Deploy using Kustomize
+                command: kubectl apply -k ./deploy
+            - run:
+                name: KGA
+                command: kubectl get all
