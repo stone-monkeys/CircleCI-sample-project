@@ -7,6 +7,7 @@ orbs:
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
     buildevents: honeycombio/buildevents@0.2.7
+    agent: datadog/agent@3.2.0
 
 executors:
   node:
@@ -65,6 +66,10 @@ jobs:
       - buildevents/with_job_span:
           steps:
             - checkout
+            - agent/setup:
+                agent_major_version: "7"
+                api_key: DATADOG_API_KEY
+                site: datadoghq.com
             - node/install-packages:
                 override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
             - snyk/scan:
