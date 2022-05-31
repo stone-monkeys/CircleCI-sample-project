@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: circleci-demo-app-${VERSION}
+  name: circleci-demo-app-v${VERSION}
   namespace: default
   labels:
     app: circleci-demo-app
@@ -21,7 +21,7 @@ spec:
       containers:
       - name: circleci-demo-app
         imagePullPolicy: Always
-        image: "660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:1.0.1"
+        image: "660990364978.dkr.ecr.eu-west-1.amazonaws.com/rp-se-demo/circle-demo-react:1.0.10"
         ports:
         - containerPort:  8080
         resources:

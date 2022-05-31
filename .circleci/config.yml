@@ -35,10 +35,14 @@ workflows:
           requires:
             - build
             - unit_tests
-      # - hold:
-      #     type: approval
-      #     requires:
-      #       - build-and-push-image
+      - hold:
+          type: approval
+          requires:
+            - build-and-push-image
+      - kconnect-and-deploy-eks:
+          context: db-CE-deploy
+          requires:
+            - hold
       # - update-deployment:
       #     context: rp-deploy-secrets
       #     requires:
@@ -46,10 +50,8 @@ workflows:
       #     filters:
       #       branches:
       #         only: vamp
-      # - kconnect-and-deploy-eks:
-      #     context: db-CE-deploy
-      #     requires:
-      #       - hold
+
+
 
   the-fixer:
     when: << pipeline.parameters.cleanup >>
@@ -160,8 +162,8 @@ jobs:
             export DECODED_TOKEN=$(echo ${SE_DEMO_CLUSTER_CCI_USER_TOKEN} | base64 -d)
             echo LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeU1ESXdPREUwTlRJeE5Wb1hEVE15TURJd05qRTBOVEl4TlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTzZUCmM0UWJJc1N5ZXZyTnFHMW05UEdiNVBHOTZ1akNrT2IxV3NLbmJ5ZGhtSWJTSUNIVElUd1FicXp1VXFtcGYrbW4KYWdzUkUvVjhCakNoeUQ4UGhPMFNXcWlpc0xETy9yUjFUY2swdm1kV1Z3N1VFQWFEUUZEN29Qb3RaTFFMR2lFSQpxelErQ3N0K2N4Z3ZlVUhsUHdCd20zZ2xkWTFtOGsvWFpWUHJ0Qmw5OGRDaGtEMmo0a2dWOGpESzNsTVVYT3luCmNYRGtYYkZMK0hyYVc3WjFEdXM2ZXVIblVZUC90UEpCVXFHQ1czMnl0Z2pQa1pFd3Q2aUJUNEJsZkxRNDF4YXYKYnZGSCt0SEdWUlplcW9uQXZYdVZielk1QXRTRVNhM0x6TUFwdVR2WlFpYVh2MW9SRC8renhBeVRGUDJhU1ladwpQR2pBd1ptZXh6N1ZMbU9nd0ZrQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZMTEsxTUxuRmIyT0hMK01lNUpEYnVKNGFXbWZNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFEcWpaOHNiV2ROZUxKQTZ3YmVxUDBUQWVPK0F6Ukg3QjZ3TCtjTzlPV2FIQzZSaDVMQgp4elNDb0wzZ1YrWEdxSmZWOW1jeVpvanJkanVmY0FuZnV0b2ZLTmVLL1BJTjUzdjFoeFZJbmZiYkNMS0JRRWFhCkNoMlcyd0ZlRHZaSzgwZndIY0kvL01zd2RQa0NUT3FLZThHY2RUbWRMS0g4MVpJUjFUbm5SRWZ0RTNUcDFrUVAKbnpzR29lMU16TFpaRW1DenBFQVowd1c1eVpscXNGZEpPKzR4RkdtOFFEWDRDeC9XZC85bituM2NhMElORC9ndgpmM292YWgzZWhTRWtiTmQ5d0V1Y2dxNEtPejFwZFNHQ20wR0JYOVNXZGVyUXQyMER6L1lXQzdGTHFKUmZVMUNtCkhBYk44Q08rOXp4RWIzVnBvSFNvWDNrVzl6Yzhpdmk4RGVLRgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg== | base64 -d > ca.crt
             kubectl config set-cluster db-cluster-cci --server=https://072417729327075A95E54022FCE204E4.sk1.eu-west-1.eks.amazonaws.com --certificate-authority=ca.crt
-            kubectl config set-credentials derrybot --token=${DECODED_TOKEN}
-            kubectl config set-context cci --user=derrybot --namespace=default --cluster=db-cluster-cci
+            kubectl config set-credentials derrysbot --token=${DECODED_TOKEN}
+            kubectl config set-context cci --user=derrysbot --namespace=default --cluster=db-cluster-cci
             kubectl config use-context cci
       - kubernetes/create-or-update-resource:
           namespace: default
@@ -194,8 +196,8 @@ jobs:
             export DECODED_TOKEN=$(echo ${SE_DEMO_CLUSTER_CCI_USER_TOKEN} | base64 -d)
             echo LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeU1ESXdPREUwTlRJeE5Wb1hEVE15TURJd05qRTBOVEl4TlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTzZUCmM0UWJJc1N5ZXZyTnFHMW05UEdiNVBHOTZ1akNrT2IxV3NLbmJ5ZGhtSWJTSUNIVElUd1FicXp1VXFtcGYrbW4KYWdzUkUvVjhCakNoeUQ4UGhPMFNXcWlpc0xETy9yUjFUY2swdm1kV1Z3N1VFQWFEUUZEN29Qb3RaTFFMR2lFSQpxelErQ3N0K2N4Z3ZlVUhsUHdCd20zZ2xkWTFtOGsvWFpWUHJ0Qmw5OGRDaGtEMmo0a2dWOGpESzNsTVVYT3luCmNYRGtYYkZMK0hyYVc3WjFEdXM2ZXVIblVZUC90UEpCVXFHQ1czMnl0Z2pQa1pFd3Q2aUJUNEJsZkxRNDF4YXYKYnZGSCt0SEdWUlplcW9uQXZYdVZielk1QXRTRVNhM0x6TUFwdVR2WlFpYVh2MW9SRC8renhBeVRGUDJhU1ladwpQR2pBd1ptZXh6N1ZMbU9nd0ZrQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZMTEsxTUxuRmIyT0hMK01lNUpEYnVKNGFXbWZNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFEcWpaOHNiV2ROZUxKQTZ3YmVxUDBUQWVPK0F6Ukg3QjZ3TCtjTzlPV2FIQzZSaDVMQgp4elNDb0wzZ1YrWEdxSmZWOW1jeVpvanJkanVmY0FuZnV0b2ZLTmVLL1BJTjUzdjFoeFZJbmZiYkNMS0JRRWFhCkNoMlcyd0ZlRHZaSzgwZndIY0kvL01zd2RQa0NUT3FLZThHY2RUbWRMS0g4MVpJUjFUbm5SRWZ0RTNUcDFrUVAKbnpzR29lMU16TFpaRW1DenBFQVowd1c1eVpscXNGZEpPKzR4RkdtOFFEWDRDeC9XZC85bituM2NhMElORC9ndgpmM292YWgzZWhTRWtiTmQ5d0V1Y2dxNEtPejFwZFNHQ20wR0JYOVNXZGVyUXQyMER6L1lXQzdGTHFKUmZVMUNtCkhBYk44Q08rOXp4RWIzVnBvSFNvWDNrVzl6Yzhpdmk4RGVLRgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg== | base64 -d > ca.crt
             kubectl config set-cluster db-cluster-cci --server=https://072417729327075A95E54022FCE204E4.sk1.eu-west-1.eks.amazonaws.com --certificate-authority=ca.crt
-            kubectl config set-credentials derrybot --token=${DECODED_TOKEN}
-            kubectl config set-context cci --user=derrybot --namespace=default --cluster=db-cluster-cci
+            kubectl config set-credentials derrysbot --token=${DECODED_TOKEN}
+            kubectl config set-context cci --user=derrysbot --namespace=default --cluster=db-cluster-cci
             kubectl config use-context cci
       
       - run:
