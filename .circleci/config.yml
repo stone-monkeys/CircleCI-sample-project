@@ -39,17 +39,17 @@ workflows:
           type: approval
           requires:
             - build-and-push-image
-      - kconnect-and-deploy-eks:
-          context: db-CE-deploy
-          requires:
-            - hold
-      # - update-deployment:
-      #     context: rp-deploy-secrets
+      # - kconnect-and-deploy-eks:
+      #     context: db-CE-deploy
       #     requires:
       #       - hold
-      #     filters:
-      #       branches:
-      #         only: vamp
+      - update-deployment:
+          context: rp-deploy-secrets
+          requires:
+            - hold
+          filters:
+            branches:
+              only: vamp
 
 
 
