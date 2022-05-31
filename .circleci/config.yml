@@ -35,17 +35,17 @@ workflows:
           requires:
             - build
             - unit_tests
-      - hold:
-          type: approval
-          requires:
-            - build-and-push-image
-      - update-deployment:
-          context: rp-deploy-secrets
-          requires:
-            - hold
-          filters:
-            branches:
-              only: vamp
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build-and-push-image
+      # - update-deployment:
+      #     context: rp-deploy-secrets
+      #     requires:
+      #       - hold
+      #     filters:
+      #       branches:
+      #         only: vamp
       # - kconnect-and-deploy-eks:
       #     context: db-CE-deploy
       #     requires:
