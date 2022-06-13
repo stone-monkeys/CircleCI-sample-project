@@ -54,8 +54,8 @@ workflows:
       #         only: main
       - kconnect-and-deploy-eks:
           context: db-CE-deploy
-          requires:
-            - hold
+          # requires:
+          #   - hold
 
 jobs:
   build:
