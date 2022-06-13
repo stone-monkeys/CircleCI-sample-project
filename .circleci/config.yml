@@ -31,7 +31,6 @@ workflows:
             - setup
       - aws-ecr/build-and-push-image:
           executor:
-            name: aws-ecr/default
             use-docker-layer-caching: true
           attach-workspace: true
           context: rp-deploy-secrets
