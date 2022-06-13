@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
     node: circleci/node@3.0.1
-    aws-ecr: circleci/aws-ecr@6.12.0
+    aws-ecr: circleci/aws-ecr@8.1.2
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
@@ -29,19 +29,19 @@ workflows:
       - unit_tests:
           requires:
             - setup
-      # - aws-ecr/build-and-push-image:
-      #     executor:
-      #       name: aws-ecr/default
-      #       use-docker-layer-caching: true
-      #     attach-workspace: true
-      #     context: rp-deploy-secrets
-      #     account-url: AWS_ECR_ACCOUNT_URL
-      #     name: build_push_ecr
-      #     repo: circle-demo-react
-      #     tag: $CIRCLE_SHA1
-      #     requires:
-      #       - build
-      #       - unit_tests
+      - aws-ecr/build-and-push-image:
+          executor:
+            name: aws-ecr/default
+            use-docker-layer-caching: true
+          attach-workspace: true
+          context: rp-deploy-secrets
+          account-url: AWS_ECR_ACCOUNT_URL
+          name: build_push_ecr
+          repo: circle-demo-react
+          tag: $CIRCLE_SHA1
+          requires:
+            - build
+            - unit_tests
       # - hold:
       #     type: approval
       #     requires:
