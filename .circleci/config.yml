@@ -30,7 +30,6 @@ workflows:
           requires:
             - setup
       - build-and-push-image:
-          attach-workspace: true
           context: rp-deploy-secrets
           name: build_push_ecr
           requires:
@@ -128,6 +127,7 @@ jobs:
           account-url: AWS_ECR_ACCOUNT_URL
           repo: circle-demo-react
           tag: $CIRCLE_SHA1
+          attach-workspace: true
 
   
   kconnect-and-deploy-eks:
