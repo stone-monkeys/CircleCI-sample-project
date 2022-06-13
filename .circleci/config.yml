@@ -46,16 +46,16 @@ workflows:
       #     type: approval
       #     requires:
       #       - build_push_ecr
-      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-          # requires:
-          #   - hold
-          filters:
-            branches:
-              only: main
-      # - kconnect-and-deploy-eks:
-      #     context: db-CE-deploy
-      #     requires:
-      #       - hold
+      # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+      #     # requires:
+      #     #   - hold
+      #     filters:
+      #       branches:
+      #         only: main
+      - kconnect-and-deploy-eks:
+          context: db-CE-deploy
+          requires:
+            - hold
 
 jobs:
   build:
