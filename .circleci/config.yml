@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
     node: circleci/node@3.0.1
-    aws-ecr: circleci/aws-ecr@8.1.2
+    aws-ecr: circleci/aws-ecr@6.12.0
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
@@ -29,19 +29,20 @@ workflows:
       - unit_tests:
           requires:
             - setup
-      - aws-ecr/build-and-push-image:
-          executor:
-            name: aws-ecr/default
-            use-docker-layer-caching: true
-          attach-workspace: true
-          context: rp-deploy-secrets
-          account-url: AWS_ECR_ACCOUNT_URL
-          name: build_push_ecr
-          repo: circle-demo-react
-          tag: $CIRCLE_SHA1
-          requires:
-            - build
-            - unit_tests
+      - build-and-push-image
+      # - aws-ecr/build-and-push-image:
+      #     executor:
+      #       name: aws-ecr/default
+      #       use-docker-layer-caching: true
+      #     attach-workspace: true
+      #     context: rp-deploy-secrets
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     name: build_push_ecr
+      #     repo: circle-demo-react
+      #     tag: $CIRCLE_SHA1
+      #     requires:
+      #       - build
+      #       - unit_tests
       # - hold:
       #     type: approval
       #     requires:
@@ -52,10 +53,10 @@ workflows:
       #     filters:
       #       branches:
       #         only: main
-      - kconnect-and-deploy-eks:
-          context: db-CE-deploy
-          # requires:
-          #   - hold
+      # - kconnect-and-deploy-eks:
+      #     context: db-CE-deploy
+      #     # requires:
+      #     #   - hold
 
 jobs:
   build:
@@ -111,6 +112,14 @@ jobs:
                 path: ~/project/test-results
             - store_artifacts:
                 path: ~/project/test-results/junit.xml
+  
+  build-and-push-image:
+    machine:
+      image: ubuntu-2204:2022.04.2
+    steps:
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
+
   
   kconnect-and-deploy-eks:
     docker:
