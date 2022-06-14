@@ -6,19 +6,19 @@ metadata:
   namespace: default
   labels:
     app: nginx-webapp
-    version: "new-app-label"
+    version: "${VERSION}"
 spec:
   replicas: 5
   selector:
     matchLabels:
       app: nginx-webapp
-      version: "new-app-label"
+      version: "${VERSION}"
   template:
     metadata:
       creationTimestamp: null
       labels:
         app: nginx-webapp
-        version: "new-app-label"
+        version: "${VERSION}"
     spec:
       containers:
         - name: webapp
