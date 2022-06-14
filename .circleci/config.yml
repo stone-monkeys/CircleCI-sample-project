@@ -19,22 +19,22 @@ executors:
 workflows:
   build_CCI:
     jobs:
-      - setup
-      - build:
-          requires:
-            - setup
-      - watch:
-          requires:
-            - setup
-      - unit_tests:
-          requires:
-            - setup
-      - build-and-push-image:
-          context: rp-deploy-secrets
-          name: build_push_ecr
-          requires:
-            - build
-            - unit_tests
+      # - setup
+      # - build:
+      #     requires:
+      #       - setup
+      # - watch:
+      #     requires:
+      #       - setup
+      # - unit_tests:
+      #     requires:
+      #       - setup
+      # - build-and-push-image:
+      #     context: rp-deploy-secrets
+      #     name: build_push_ecr
+      #     requires:
+      #       - build
+      #       - unit_tests
       # - aws-ecr/build-and-push-image:
       #     executor:
       #       name: aws-ecr/default
@@ -48,10 +48,10 @@ workflows:
       #     requires:
       #       - build
       #       - unit_tests
-      - hold:
-          type: approval
-          requires:
-            - build_push_ecr
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build_push_ecr
       # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
       #     # requires:
       #     #   - hold
@@ -60,8 +60,8 @@ workflows:
       #         only: main
       - kconnect-and-deploy-eks:
           context: db-CE-deploy
-          requires:
-            - hold
+          # requires:
+          #   - hold
 
 jobs:
   build:
