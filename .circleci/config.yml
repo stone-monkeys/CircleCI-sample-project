@@ -35,31 +35,12 @@ workflows:
           requires:
             - build
             - unit_tests
-      # - aws-ecr/build-and-push-image:
-      #     executor:
-      #       name: aws-ecr/default
-      #       use-docker-layer-caching: true
-      #     attach-workspace: true
-      #     context: rp-deploy-secrets
-      #     account-url: AWS_ECR_ACCOUNT_URL
-      #     name: build_push_ecr
-      #     repo: circle-demo-react
-      #     tag: $CIRCLE_SHA1
-      #     requires:
-      #       - build
-      #       - unit_tests
       - hold:
           type: approval
           requires:
             - build_push_ecr
-      # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-      #     # requires:
-      #     #   - hold
-      #     filters:
-      #       branches:
-      #         only: main
       - kconnect-and-deploy-eks:
-          context: db-CE-deploy
+          context: [db-CE-deploy, reference-arch-aws-oidc]
           requires:
             - hold
 
