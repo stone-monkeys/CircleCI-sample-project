@@ -73,7 +73,7 @@ jobs:
           steps:
             - checkout
             - github-cli/clone:
-                repo: https://github.com/AwesomeCICD/circle-demo-react.git
+                repo: git@github.com:AwesomeCICD/circle-demo-react.git
   
   setup:
     executor: base
