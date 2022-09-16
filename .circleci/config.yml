@@ -72,6 +72,7 @@ jobs:
       - buildevents/with_job_span:
           steps:
             - checkout
+            - gh/install
             - github-cli/clone:
                 repo: git@github.com:AwesomeCICD/circle-demo-react.git
   
