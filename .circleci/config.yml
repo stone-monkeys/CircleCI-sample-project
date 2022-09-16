@@ -72,9 +72,10 @@ jobs:
       - buildevents/with_job_span:
           steps:
             - checkout
-            - github-cli/install
-            - github-cli/clone:
-                repo: git@github.com:AwesomeCICD/circle-demo-react.git
+            - run:
+                name: Test application 
+                command: |
+                  git clone git@github.com:stone-monkeys/react-deploy.git
   
   setup:
     executor: base
