@@ -7,6 +7,7 @@ orbs:
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
     buildevents: honeycombio/buildevents@0.2.7
+    github-cli: circleci/github-cli@2.1.0
 
 executors:
   node:
@@ -71,10 +72,8 @@ jobs:
       - buildevents/with_job_span:
           steps:
             - checkout
-            - run:
-                name: Test application 
-                command: |
-                  git clone git@github.com:AwesomeCICD/reference-architecture.git
+            - github-cli/clone:
+                repo: https://github.com/AwesomeCICD/circle-demo-react.git
   
   setup:
     executor: base
