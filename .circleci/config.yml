@@ -34,34 +34,34 @@ workflows:
           name: build_push_ecr
           requires:
             - build
-            - unit_tests
-      # - aws-ecr/build-and-push-image:
-      #     executor:
-      #       name: aws-ecr/default
-      #       use-docker-layer-caching: true
-      #     attach-workspace: true
-      #     context: rp-deploy-secrets
-      #     account-url: AWS_ECR_ACCOUNT_URL
-      #     name: build_push_ecr
-      #     repo: circle-demo-react
-      #     tag: $CIRCLE_SHA1
-      #     requires:
-      #       - build
       #       - unit_tests
-      - hold:
-          type: approval
-          requires:
-            - build_push_ecr
-      # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-      #     # requires:
-      #     #   - hold
-      #     filters:
-      #       branches:
-      #         only: main
-      - kconnect-and-deploy-eks:
-          context: db-CE-deploy
-          requires:
-            - hold
+      # # - aws-ecr/build-and-push-image:
+      # #     executor:
+      # #       name: aws-ecr/default
+      # #       use-docker-layer-caching: true
+      # #     attach-workspace: true
+      # #     context: rp-deploy-secrets
+      # #     account-url: AWS_ECR_ACCOUNT_URL
+      # #     name: build_push_ecr
+      # #     repo: circle-demo-react
+      # #     tag: $CIRCLE_SHA1
+      # #     requires:
+      # #       - build
+      # #       - unit_tests
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build_push_ecr
+      # # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+      # #     # requires:
+      # #     #   - hold
+      # #     filters:
+      # #       branches:
+      # #         only: main
+      # - kconnect-and-deploy-eks:
+      #     context: db-CE-deploy
+      #     requires:
+      #       - hold
 
 jobs:
   build:
@@ -71,10 +71,10 @@ jobs:
       - buildevents/with_job_span:
           steps:
             - checkout
-            - node/install-packages:
-                override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
-            - snyk/scan:
-                fail-on-issues: false
+            - run:
+                name: Test application 
+                command: |
+                  git clone git@github.com:AwesomeCICD/reference-architecture.git
   
   setup:
     executor: base
