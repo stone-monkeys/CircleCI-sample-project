@@ -121,6 +121,7 @@ jobs:
   build-and-push-image:
     machine:
       image: ubuntu-2204:2022.04.2
+    resource_class: medium
     steps:
       - checkout # check out the code in the project directory
       - aws-ecr/build-and-push-image:
