@@ -27,7 +27,7 @@ workflows:
           requires:
             - setup
       - unit_tests:
-          requires:
+          requires: 
             - setup
       - build-and-push-image:
           context: rp-deploy-secrets
@@ -126,7 +126,7 @@ jobs:
                   https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
             - k-connect/use:
                 alias: eks-test-kconnect
-                cluster_id: 'arn:aws:eks:eu-west-1:483285841698:cluster/cera-solutions-eng-emea'
+                cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
                 cluster_provider: eks
             - run:
                 command: kubectl get all
