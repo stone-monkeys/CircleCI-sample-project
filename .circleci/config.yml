@@ -6,7 +6,6 @@ orbs:
     k-connect: db-cci-ns/k-connect@0.5.0
     snyk: snyk/snyk@1.1.2
     heroku: circleci/heroku@0.0.10
-    buildevents: honeycombio/buildevents@0.2.7
 
 executors:
   node:
@@ -19,104 +18,63 @@ executors:
 workflows:
   build_CCI:
     jobs:
-      - setup
-      - build:
-          requires:
-            - setup
-      - watch:
-          requires:
-            - setup
-      - unit_tests:
-          requires:
-            - setup
-      - build-and-push-image:
-          context: rp-deploy-secrets
-          name: build_push_ecr
-          requires:
-            - build
-            - unit_tests
-      # - aws-ecr/build-and-push-image:
-      #     executor:
-      #       name: aws-ecr/default
-      #       use-docker-layer-caching: true
-      #     attach-workspace: true
+      # - build
+      # - unit_tests
+      # - build-and-push-image:
       #     context: rp-deploy-secrets
-      #     account-url: AWS_ECR_ACCOUNT_URL
       #     name: build_push_ecr
-      #     repo: circle-demo-react
-      #     tag: $CIRCLE_SHA1
       #     requires:
       #       - build
       #       - unit_tests
-      - hold:
-          type: approval
-          requires:
-            - build_push_ecr
-      # - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-      #     # requires:
-      #     #   - hold
-      #     filters:
-      #       branches:
-      #         only: main
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build_push_ecr
       - kconnect-and-deploy-eks:
           context: db-CE-deploy
-          requires:
-            - hold
+          # requires:
+          #   - hold
 
 jobs:
   build:
     docker: 
       - image: cimg/node:14.0.0
     steps:
-      - buildevents/with_job_span:
-          steps:
-            - checkout
-            - node/install-packages:
-                override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
-            - snyk/scan:
-                fail-on-issues: false
-  
-  setup:
-    executor: base
-    steps:
-      - buildevents/start_trace 
-
-  watch:
-    executor: base
-    steps:
-      - buildevents/watch_build_and_finish
+        - checkout
+        - node/install-packages:
+            override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
+        - snyk/scan:
+            fail-on-issues: false
   
   unit_tests:
     docker:
       - image: cimg/node:14.0.0
     parallelism: 3
     steps:
-      - buildevents/with_job_span:
-          steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-                    - node-cache-v1-{{ .Branch }}-
-                    - node-cache-v1-
-            - run:
-                name: Fetch dependencies
-                command: npm ci
-            - save_cache:
-                paths:
-                    - ~/.npm
-                    - ~/.cache
-                key: node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - run:
-                name: Test application 
-                command: |
-                  touch junit.xml
-                  TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
-                  npm test $TEST
-            - store_test_results:
-                path: ~/project/test-results
-            - store_artifacts:
-                path: ~/project/test-results/junit.xml
+        - checkout
+        - restore_cache:
+            keys:
+                - node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+                - node-cache-v1-{{ .Branch }}-
+                - node-cache-v1-
+        - run:
+            name: Fetch dependencies
+            command: npm ci
+        - save_cache:
+            paths:
+                - ~/.npm
+                - ~/.cache
+            key: node-cache-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+        - run:
+            name: Test application 
+            command: |
+              touch junit.xml
+              TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
+              npm test $TEST
+        - store_test_results:
+            path: ~/project/test-results
+        - store_artifacts:
+            path: ~/project/test-results/junit.xml
   
   build-and-push-image:
     machine:
@@ -136,25 +94,48 @@ jobs:
       - image: 'cimg/base:2021.04'
     environment:
     steps:
-      - buildevents/with_job_span:
-          steps:
-            - checkout
-            - k-connect/install 
-            - k-connect/configure:
-                config_file_path: >-
-                  https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-            - k-connect/use:
-                alias: eks-test-kconnect
-                cluster_id: 'arn:aws:eks:eu-west-1:483285841698:cluster/cera-solutions-eng-emea'
-                cluster_provider: eks
-            - run:
-                command: kubectl get all
-                name: Test kconnect connection
-            - k-connect/to:
-                alias: eks-test-kconnect
-            - run:
-                name: Deploy using Kustomize
-                command: kubectl apply -k ./deploy
-            - run:
-                name: KGA
-                command: kubectl get all
+        - checkout
+        - enable-oidc
+        - k-connect/install 
+        - k-connect/configure:
+            config_file_path: >-
+              https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+        - k-connect/use:
+            alias: eks-test-kconnect
+            cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
+            cluster_provider: eks
+        - run:
+            command: kubectl get all
+            name: Test kconnect connection
+        - k-connect/to:
+            alias: eks-test-kconnect
+        - run:
+            name: Deploy using Kustomize
+            command: kubectl apply -k ./deploy
+        - run:
+            name: KGA
+            command: kubectl get all
+
+commands:
+  enable-oidc:
+    steps:
+      - run:
+          name: authenticate-and-interact
+          command: |
+            # use the OpenID Connect token to obtain AWS credentials
+            read -r AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \<<< \
+              $(aws sts assume-role-with-web-identity \
+              --role-arn ${AWS_ROLE_ARN} \
+              --role-session-name "CircleCI-Pipeline-BoA" \
+              --web-identity-token $CIRCLE_OIDC_TOKEN \
+              --duration-seconds 3600 \
+              --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
+              --output text)
+            export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+            # interact with AWS
+            aws sts get-caller-identity
+            echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $BASH_ENV
+            echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
+            echo "export AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}" >> $BASH_ENV
+            source $BASH_ENV
+# VS Code Extension Version: 1.0.0
