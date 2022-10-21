@@ -113,12 +113,12 @@ jobs:
             name: Test kconnect connection
         - k-connect/to:
             alias: eks-emea-connect
-        # - run:
-        #     name: Deploy using Kustomize
-        #     command: kubectl apply -k ./deploy
-        # - run:
-        #     name: KGA
-        #     command: kubectl get all
+        - run:
+            name: Deploy using Kustomize
+            command: kubectl apply -k ./deploy
+        - run:
+            name: KGA
+            command: kubectl get all
 
 commands:
   enable-oidc:
