@@ -18,22 +18,22 @@ executors:
 workflows:
   build_CCI:
     jobs:
-      # - build
+      - build
       - unit_tests
-      # - build-and-push-image:
-      #     context: rp-deploy-secrets
-      #     name: build_push_ecr
-      #     requires:
-      #       - build
-      #       - unit_tests
-      # - hold:
-      #     type: approval
-      #     requires:
-      #       - build_push_ecr
+      - build-and-push-image:
+          context: [db-oidc, db-CE-deploy]
+          name: build_push_ecr
+          requires:
+            - build
+            - unit_tests
+      - hold:
+          type: approval
+          requires:
+            - build_push_ecr
       - kconnect-and-deploy-eks:
           context: [db-oidc]
-          # requires:
-          #   - hold
+          requires:
+            - hold
 
 jobs:
   build:
@@ -82,9 +82,14 @@ jobs:
     resource_class: medium
     steps:
       - checkout # check out the code in the project directory
+      - enable-oidc
+      - run: | 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
-          repo: circle-demo-react
+          repo: react-demo
           tag: $CIRCLE_SHA1
           attach-workspace: true
 
