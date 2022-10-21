@@ -102,19 +102,19 @@ jobs:
         - enable-oidc
         - run: |
             kubectl get all
-        # - k-connect/install 
-        # - k-connect/configure:
-        #     config_file_path: >-
-        #       https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-        # - k-connect/use:
-        #     alias: eks-test-kconnect
-        #     cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
-        #     cluster_provider: eks
-        # - run:
-        #     command: kubectl get all
-        #     name: Test kconnect connection
-        # - k-connect/to:
-        #     alias: eks-test-kconnect
+        - k-connect/install 
+        - k-connect/configure:
+            config_file_path: >-
+              https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+        - k-connect/use:
+            alias: eks-emea-connect
+            cluster_id: 'arn:aws:eks:eu-west-1:483285841698:cluster/cera-solutions-eng-emea'
+            cluster_provider: eks
+        - run:
+            command: kubectl get all
+            name: Test kconnect connection
+        - k-connect/to:
+            alias: eks-emea-connect
         # - run:
         #     name: Deploy using Kustomize
         #     command: kubectl apply -k ./deploy
