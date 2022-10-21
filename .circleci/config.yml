@@ -31,7 +31,7 @@ workflows:
       #     requires:
       #       - build_push_ecr
       - kconnect-and-deploy-eks:
-          context: [db-CE-deploy, reference-arch-aws-oidc]
+          context: [db-oidc]
           # requires:
           #   - hold
 
@@ -100,25 +100,25 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
         - enable-oidc
-        - k-connect/install 
-        - k-connect/configure:
-            config_file_path: >-
-              https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-        - k-connect/use:
-            alias: eks-test-kconnect
-            cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
-            cluster_provider: eks
-        - run:
-            command: kubectl get all
-            name: Test kconnect connection
-        - k-connect/to:
-            alias: eks-test-kconnect
-        - run:
-            name: Deploy using Kustomize
-            command: kubectl apply -k ./deploy
-        - run:
-            name: KGA
-            command: kubectl get all
+        # - k-connect/install 
+        # - k-connect/configure:
+        #     config_file_path: >-
+        #       https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+        # - k-connect/use:
+        #     alias: eks-test-kconnect
+        #     cluster_id: 'arn:aws:eks:eu-west-1:660990364978:cluster/db-cluster-cci'
+        #     cluster_provider: eks
+        # - run:
+        #     command: kubectl get all
+        #     name: Test kconnect connection
+        # - k-connect/to:
+        #     alias: eks-test-kconnect
+        # - run:
+        #     name: Deploy using Kustomize
+        #     command: kubectl apply -k ./deploy
+        # - run:
+        #     name: KGA
+        #     command: kubectl get all
 
 commands:
   enable-oidc:
