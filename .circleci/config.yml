@@ -31,7 +31,7 @@ workflows:
       #     requires:
       #       - build_push_ecr
       - kconnect-and-deploy-eks:
-          context: db-CE-deploy
+          context: [db-CE-deploy, db-oidc]
           # requires:
           #   - hold
 
