@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   name: nginx-webapp
-  namespace: derry-demo-app
+  namespace: db-demo-app
   labels:
     app: nginx-webapp
     version: "new-app-label"
