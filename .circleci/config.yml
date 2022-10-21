@@ -100,6 +100,8 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
         - enable-oidc
+        - run: |
+            kubectl get all
         # - k-connect/install 
         # - k-connect/configure:
         #     config_file_path: >-
