@@ -83,10 +83,6 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - enable-oidc
-      - run: | 
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
           repo: react-demo
@@ -100,10 +96,10 @@ jobs:
     environment:
     steps:
         - checkout
-        # - run: | 
-        #     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        #     unzip awscliv2.zip
-        #     sudo ./aws/install
+        - run: | 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
         - enable-oidc
         - k-connect/install 
         - k-connect/configure:
