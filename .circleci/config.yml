@@ -19,21 +19,21 @@ workflows:
   build_CCI:
     jobs:
       - build
-      # - unit_tests
-      # - build-and-push-image:
-      #     context: [db-oidc, db-CE-deploy]
-      #     name: build_push_ecr
-      #     requires:
-      #       - hold
-      # - hold:
-      #     type: approval
-      #     requires:
-      #       - build
-      #       - unit_tests
-      # - kconnect-and-deploy-eks:
-      #     context: [db-oidc]
-      #     requires:
-      #       - build_push_ecr
+      - unit_tests
+      - build-and-push-image:
+          context: [db-oidc, db-CE-deploy]
+          name: build_push_ecr
+          requires:
+            - hold
+      - hold:
+          type: approval
+          requires:
+            - build
+            - unit_tests
+      - kconnect-and-deploy-eks:
+          context: [db-oidc]
+          requires:
+            - build_push_ecr
 
 jobs:
   build:
