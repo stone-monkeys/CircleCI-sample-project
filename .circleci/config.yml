@@ -24,16 +24,16 @@ workflows:
           context: [db-oidc, db-CE-deploy]
           name: build_push_ecr
           requires:
-            - build
-            - unit_tests
+            - hold
       - hold:
           type: approval
           requires:
-            - build_push_ecr
+            - build
+            - unit_tests
       - kconnect-and-deploy-eks:
           context: [db-oidc]
           requires:
-            - hold
+            - build_push_ecr
 
 jobs:
   build:
