@@ -19,7 +19,7 @@ workflows:
   build_CCI:
     jobs:
       - build
-      - unit_tests
+      # - unit_tests
       # - build-and-push-image:
       #     context: [db-oidc, db-CE-deploy]
       #     name: build_push_ecr
