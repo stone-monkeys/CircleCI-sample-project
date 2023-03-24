@@ -21,7 +21,7 @@ workflows:
       - build
       - unit_tests
       - build-and-push-image:
-          context: [db-oidc, db-CE-deploy, db-prod-context]
+          context: [db-oidc, db-CE-deploy, reference-arch-aws-oidc]
           name: build_push_ecr
           requires:
             - hold
